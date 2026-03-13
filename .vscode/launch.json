@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Video Processor Worker",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/Worker/FiapXVideoProcessor.Worker/bin/Debug/net10.0/FiapXVideoProcessor.Worker.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Worker/FiapXVideoProcessor.Worker",
+      "console": "integratedTerminal",
+      "stopAtEntry": false,
+      "env": {
+        "DOTNET_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5110"
+      }
+    }
+  ]
+}

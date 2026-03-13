@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="Core/FiapXVideoProcessor.Application/FiapXVideoProcessor.Application.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infrastructure/FiapXVideoProcessor.Infrastructure/FiapXVideoProcessor.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/FiapXVideoProcessor.Tests/FiapXVideoProcessor.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Worker/">
+    <Project Path="Worker/FiapXVideoProcessor.Worker/FiapXVideoProcessor.Worker.csproj" />
+  </Folder>
+</Solution>
