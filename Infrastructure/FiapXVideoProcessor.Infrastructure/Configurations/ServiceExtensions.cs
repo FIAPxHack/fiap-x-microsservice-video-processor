@@ -60,7 +60,8 @@ public static class ServiceExtensions
         services.AddScoped<IVideoProcessingService, FfmpegVideoProcessor>();
 
         // HTTP Client com Polly
-        var videoManagerBaseUrl = configuration["VideoManager:BaseUrl"] ?? "http://localhost:8080";
+        var videoManagerBaseUrl = configuration["VideoManager:BaseUrl"]
+    ?? throw new InvalidOperationException("A configuração 'VideoManager:BaseUrl' é obrigatória.");
         services.AddHttpClient<IVideoManagerClient, VideoManagerHttpClient>(client =>
         {
             client.BaseAddress = new Uri(videoManagerBaseUrl);

@@ -25,9 +25,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\..\Core\FiapXVideoProcessor.Application\FiapXVideoProcessor.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\FiapXVideoProcessor.Infrastructure\FiapXVideoProcessor.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Worker\FiapXVideoProcessor.Worker\FiapXVideoProcessor.Worker.csproj" />
   </ItemGroup>
 
 </Project>
