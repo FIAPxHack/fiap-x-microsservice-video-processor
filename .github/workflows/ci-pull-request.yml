@@ -64,4 +64,6 @@ jobs:
           
           dotnet build --configuration Release
           
+          dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --results-directory ./coverage
+          
           dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
