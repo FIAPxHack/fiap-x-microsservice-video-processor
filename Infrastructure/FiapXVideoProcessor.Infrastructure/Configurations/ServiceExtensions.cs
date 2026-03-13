@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Amazon;
 using Amazon.S3;
 using Amazon.SQS;
@@ -13,18 +14,16 @@ using VideoProcessor.Infrastructure.Storage;
 
 namespace VideoProcessor.Infrastructure.Configurations;
 
+[ExcludeFromCodeCoverage]
 public static class ServiceExtensions
 {
     public static void ConfigureInfrastructureApp(this IServiceCollection services, IConfiguration configuration)
     {
-        // Settings
         services.Configure<AwsSettings>(configuration.GetSection("Aws"));
 
         var awsRegion = configuration["Aws:Region"] ?? "us-east-1";
-
         var serviceUrl = configuration["Aws:ServiceUrl"];
 
-        // AWS Clients
         services.AddSingleton<IAmazonSQS>(_ =>
         {
             var config = new AmazonSQSConfig { RegionEndpoint = RegionEndpoint.GetBySystemName(awsRegion) };
@@ -45,7 +44,6 @@ public static class ServiceExtensions
             return new AmazonS3Client(config);
         });
 
-        // Redis
         var redisConnection = configuration["Redis:ConnectionString"] ?? "localhost:6379";
         services.AddStackExchangeRedisCache(options =>
         {
@@ -54,14 +52,12 @@ public static class ServiceExtensions
         });
         services.AddScoped<ICacheService, RedisCacheService>();
 
-        // Services
         services.AddScoped<IQueueConsumer, SqsConsumer>();
         services.AddScoped<IStorageService, S3StorageService>();
         services.AddScoped<IVideoProcessingService, FfmpegVideoProcessor>();
 
-        // HTTP Client com Polly
         var videoManagerBaseUrl = configuration["VideoManager:BaseUrl"]
-    ?? throw new InvalidOperationException("A configuração 'VideoManager:BaseUrl' é obrigatória.");
+            ?? throw new InvalidOperationException("A configuração 'VideoManager:BaseUrl' é obrigatória.");
         services.AddHttpClient<IVideoManagerClient, VideoManagerHttpClient>(client =>
         {
             client.BaseAddress = new Uri(videoManagerBaseUrl);

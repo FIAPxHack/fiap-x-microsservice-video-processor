@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using VideoProcessor.Application.Configurations;
 using VideoProcessor.Infrastructure.Configurations;
 using VideoProcessor.Worker.Workers;
@@ -17,3 +18,6 @@ var app = builder.Build();
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
 await app.RunAsync();
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }

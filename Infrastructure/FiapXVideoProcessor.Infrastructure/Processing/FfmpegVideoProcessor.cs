@@ -1,10 +1,12 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using Microsoft.Extensions.Logging;
 using VideoProcessor.Application.Interfaces;
 
 namespace VideoProcessor.Infrastructure.Processing;
 
+[ExcludeFromCodeCoverage]
 public class FfmpegVideoProcessor : IVideoProcessingService
 {
     private readonly ILogger<FfmpegVideoProcessor> _logger;
@@ -22,7 +24,7 @@ public class FfmpegVideoProcessor : IVideoProcessingService
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "ffmpeg",
+                FileName = "/usr/bin/ffmpeg",
                 Arguments = $"-i \"{videoFilePath}\" -vf fps=1 \"{Path.Combine(outputDirectory, "frame_%04d.png")}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,

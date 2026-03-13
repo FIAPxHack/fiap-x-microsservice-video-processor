@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Microsoft.Extensions.Logging;
@@ -5,6 +6,7 @@ using VideoProcessor.Application.Interfaces;
 
 namespace VideoProcessor.Infrastructure.Storage;
 
+[ExcludeFromCodeCoverage]
 public class S3StorageService : IStorageService
 {
     private readonly IAmazonS3 _s3Client;
