@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-FiapXVideoProcessor.Worker-8b1f8158-1c62-4ab7-98bd-bc5e8c879302</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\FiapXVideoProcessor.Infrastructure\FiapXVideoProcessor.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Core\FiapXVideoProcessor.Application\FiapXVideoProcessor.Application.csproj" />
+  </ItemGroup>
+</Project>

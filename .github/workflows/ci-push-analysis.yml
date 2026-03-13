@@ -1,0 +1,54 @@
+name: "[Etapa 3] Push - Análise Contínua"
+
+on:
+  push:
+    branches: [ "develop", "feature/**" ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar .NET SDK 10.0
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaurar dependências
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Rodar Testes com Cobertura
+        run: dotnet test --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+      - name: Instalar SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Análise SonarQube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          dotnet sonarscanner begin \
+            /k:"FIAPxHack_fiap-x-microsservice-video-processor" \
+            /o:"fiapxhack" \
+            /d:sonar.token="${SONAR_TOKEN}" \
+            /d:sonar.host.url="${SONAR_HOST_URL}" \
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          
+          dotnet build --configuration Release
+          
+          dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
