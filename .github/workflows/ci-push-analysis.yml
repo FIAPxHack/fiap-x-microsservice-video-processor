@@ -2,7 +2,7 @@ name: "[Etapa 3] Push - Análise Contínua"
 
 on:
   push:
-    branches: [ "develop", "feature/**" ]
+    branches: [ "develop", "feature/**", "main" ]
 
 jobs:
   code-quality:
