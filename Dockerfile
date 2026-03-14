@@ -28,8 +28,7 @@ RUN dotnet publish -c Release -o /app/publish
 
 # Etapa 3 -> Final
 FROM base AS final
-RUN adduser --disabled-password --gecos "" appuser
-USER appuser
+USER app
 WORKDIR /app
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "FiapXVideoProcessor.Worker.dll"]
