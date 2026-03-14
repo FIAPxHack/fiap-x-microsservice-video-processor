@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -r
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY ["Core/FiapXVideoProcessor.Domain/FiapXVideoProcessor.Domain.csproj", "Core/FiapXVideoProcessor.Domain/"]
 COPY ["Core/FiapXVideoProcessor.Application/FiapXVideoProcessor.Application.csproj", "Core/FiapXVideoProcessor.Application/"]
 COPY ["Infrastructure/FiapXVideoProcessor.Infrastructure/FiapXVideoProcessor.Infrastructure.csproj", "Infrastructure/FiapXVideoProcessor.Infrastructure/"]
 COPY ["Worker/FiapXVideoProcessor.Worker/FiapXVideoProcessor.Worker.csproj", "Worker/FiapXVideoProcessor.Worker/"]
