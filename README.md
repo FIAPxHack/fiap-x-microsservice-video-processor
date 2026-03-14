@@ -7,7 +7,7 @@ Microsserviço responsável por consumir mensagens de uma fila SQS, processar v�
 ## Arquitetura
 
 ```
-S3 (novo arquivo) → SQS (mensagem) → Video Processor (consumer)
+S3 (novo arquivo) → SQS (mensagem) → Video Processor (consumer) 
 → Download do vídeo (S3)
 → Extração de frames (FFmpeg)
 → Criação do ZIP
