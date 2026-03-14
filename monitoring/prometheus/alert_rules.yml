@@ -1,0 +1,48 @@
+﻿groups:
+  - name: video-processor_alerts
+    rules:
+      # API fora do ar
+      - alert: APIDown
+        expr: up{job="video-processor"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Video Processor API está fora do ar"
+          description: "O serviço video-processor-api não está respondendo há mais de 1 minuto."
+
+      # Alta taxa de erros HTTP (5xx)
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_received_total{code=~"5.."}[5m])) /
+          sum(rate(http_requests_received_total[5m])) > 0.05
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alta taxa de erros HTTP 5xx"
+          description: "Mais de 5% das requisições estão retornando erro nos últimos 5 minutos."
+
+      # Latência alta (p95 > 2s)
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latência p95 elevada"
+          description: "95% das requisições estão demorando mais de 2 segundos."
+
+      # PostgreSQL fora do ar
+      - alert: PostgresDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL está fora do ar"
+          description: "O exporter do PostgreSQL não está respondendo."
+

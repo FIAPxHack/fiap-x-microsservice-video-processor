@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\Infrastructure\FiapXVideoProcessor.Infrastructure\FiapXVideoProcessor.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Core\FiapXVideoProcessor.Application\FiapXVideoProcessor.Application.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
+  </ItemGroup>
 </Project>

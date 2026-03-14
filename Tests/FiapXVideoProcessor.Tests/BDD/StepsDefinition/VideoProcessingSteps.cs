@@ -16,6 +16,7 @@ public class VideoProcessingSteps
     private readonly Mock<IVideoProcessingService> _mockVideoProcessingService;
     private readonly Mock<IVideoManagerClient> _mockVideoManagerClient;
     private readonly Mock<ICacheService> _mockCacheService;
+    private readonly Mock<IVideoProcessingMetrics> _mockMetrics;
     private readonly Mock<ILogger<ProcessVideoHandler>> _mockLogger;
 
     private ProcessVideoHandler _handler = null!;
@@ -32,6 +33,7 @@ public class VideoProcessingSteps
         _mockVideoProcessingService = new Mock<IVideoProcessingService>();
         _mockVideoManagerClient = new Mock<IVideoManagerClient>();
         _mockCacheService = new Mock<ICacheService>();
+        _mockMetrics = new Mock<IVideoProcessingMetrics>();
         _mockLogger = new Mock<ILogger<ProcessVideoHandler>>();
     }
 
@@ -85,6 +87,7 @@ public class VideoProcessingSteps
             _mockVideoProcessingService.Object,
             _mockVideoManagerClient.Object,
             _mockCacheService.Object,
+            _mockMetrics.Object,
             _mockLogger.Object);
 
         var command = new ProcessVideoCommand(_message);
