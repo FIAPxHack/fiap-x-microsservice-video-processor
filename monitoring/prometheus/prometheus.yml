@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s       # com que frequência raspar alvos
+  evaluation_interval: 15s   # com que frequência avaliar regras de alerta
+  external_labels:
+    service: fiap-x-video-processor
+
+# Regras de alerta (arquivo separado)
+rule_files:
+  - "alert_rules.yml"
+
+scrape_configs:
+  # Métricas da própria API .NET
+  - job_name: "video-processor"
+    static_configs:
+      - targets: ["video-processor:8080"]
+    metrics_path: /metrics
+
+  # Métricas do próprio Prometheus
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

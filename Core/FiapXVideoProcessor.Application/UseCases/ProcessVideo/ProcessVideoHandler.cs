@@ -12,6 +12,7 @@ public class ProcessVideoHandler : IRequestHandler<ProcessVideoCommand, bool>
     private readonly IVideoProcessingService _videoProcessingService;
     private readonly IVideoManagerClient _videoManagerClient;
     private readonly ICacheService _cacheService;
+    private readonly IVideoProcessingMetrics _metrics;
     private readonly ILogger<ProcessVideoHandler> _logger;
 
     public ProcessVideoHandler(
@@ -19,12 +20,14 @@ public class ProcessVideoHandler : IRequestHandler<ProcessVideoCommand, bool>
         IVideoProcessingService videoProcessingService,
         IVideoManagerClient videoManagerClient,
         ICacheService cacheService,
+        IVideoProcessingMetrics metrics,
         ILogger<ProcessVideoHandler> logger)
     {
         _storageService = storageService;
         _videoProcessingService = videoProcessingService;
         _videoManagerClient = videoManagerClient;
         _cacheService = cacheService;
+        _metrics = metrics;
         _logger = logger;
     }
 
@@ -33,6 +36,7 @@ public class ProcessVideoHandler : IRequestHandler<ProcessVideoCommand, bool>
         var message = request.Message;
         var cacheKey = $"processing:{message.VideoId}";
         var workDir = Path.Combine(Path.GetTempPath(), "video-processor", message.VideoId);
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
         try
         {
@@ -81,13 +85,21 @@ public class ProcessVideoHandler : IRequestHandler<ProcessVideoCommand, bool>
 
             await _cacheService.SetAsync(cacheKey, "completed", TimeSpan.FromHours(24), cancellationToken);
 
-            _logger.LogInformation("Vídeo {VideoId} processado com sucesso. ZIP: {ZipKey}, Frames: {FrameCount}",
-                message.VideoId, zipS3Key, frameCount);
+            stopwatch.Stop();
+            _metrics.RecordDuration(stopwatch.Elapsed.TotalSeconds, "success");
+            _metrics.IncrementProcessed("success");
+
+            _logger.LogInformation("Vídeo {VideoId} processado com sucesso. ZIP: {ZipKey}, Frames: {FrameCount}, Duração: {Duration:F2}s",
+                message.VideoId, zipS3Key, frameCount, stopwatch.Elapsed.TotalSeconds);
             return true;
         }
         catch (Exception ex)
         {
+            stopwatch.Stop();
             _logger.LogError(ex, "Falha ao processar vídeo {VideoId}", message.VideoId);
+
+            _metrics.RecordDuration(stopwatch.Elapsed.TotalSeconds, "failure");
+            _metrics.IncrementProcessed("failure");
 
             await _cacheService.RemoveAsync(cacheKey, cancellationToken);
 

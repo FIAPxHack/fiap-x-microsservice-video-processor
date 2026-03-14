@@ -30,7 +30,7 @@ public class SqsConsumer : IQueueConsumer
         {
             QueueUrl = _settings.SqsQueueUrl,
             MaxNumberOfMessages = 1,
-            WaitTimeSeconds = 120
+            WaitTimeSeconds = 20
         };
 
         var response = await _sqsClient.ReceiveMessageAsync(request, cancellationToken);

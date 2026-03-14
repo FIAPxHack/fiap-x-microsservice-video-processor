@@ -40,8 +40,8 @@ namespace FiapXVideoProcessor.Tests.BDD.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt"), "BDD/Features", "Processamento de Vídeo", "  Como o serviço de processamento de vídeos\n  Eu quero processar vídeos recebidos" +
-                    " via fila SQS\n  Para extrair frames e disponibilizar como ZIP no S3", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt"), "BDD/Features", "Processamento de Vídeo", "  Como o serviço de processamento de vídeos\r\n  Eu quero processar vídeos recebido" +
+                    "s via fila SQS\r\n  Para extrair frames e disponibilizar como ZIP no S3", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
