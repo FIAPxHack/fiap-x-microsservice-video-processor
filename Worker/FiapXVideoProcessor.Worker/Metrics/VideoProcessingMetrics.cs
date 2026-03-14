@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Prometheus;
 using VideoProcessor.Application.Interfaces;
 
 namespace VideoProcessor.Worker.Metrics;
 
+[ExcludeFromCodeCoverage]
 public sealed class VideoProcessingMetrics : IVideoProcessingMetrics
 {
     private readonly Counter _videosProcessed;
