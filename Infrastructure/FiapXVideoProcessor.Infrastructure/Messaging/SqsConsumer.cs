@@ -68,6 +68,13 @@ public class SqsConsumer : IQueueConsumer
             var bucketName = s3.GetProperty("bucket").GetProperty("name").GetString()!;
             var objectKey = s3.GetProperty("object").GetProperty("key").GetString()!;
 
+            // Ignorar arquivos .zip (resultado do processamento, não deve ser reprocessado)
+            if (objectKey.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.LogInformation("Ignorando evento S3 para arquivo .zip: {Key}", objectKey);
+                return null;
+            }
+
             // Extrair videoId do path (uploads/{videoId}/arquivo.mp4)
             var segments = objectKey.Split('/');
             var videoId = segments.Length >= 2 ? segments[1] : Guid.NewGuid().ToString();
